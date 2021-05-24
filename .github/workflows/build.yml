@@ -18,5 +18,5 @@ jobs:
       - uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: my-artifact
-          path: path/to/artifact
+          name: magnetic-pendulum
+          path: build/magnetic-pendulum.md
