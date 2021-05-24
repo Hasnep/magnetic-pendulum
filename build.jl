@@ -7,7 +7,7 @@ mkpath(images_folder)
 
 # Build markdown document
 Literate.markdown(
-    joinpath(pwd(), "src", "blogpost.jl"),
+    joinpath(pwd(), "src", "magnetic-pendulum.jl"),
     joinpath(pwd(), "build");
     documenter = false,
     execute = true,
@@ -20,10 +20,10 @@ if "--pandoc" in ARGS
     run(
         Cmd([
             "pandoc",
-            "build/blogpost.md",
+            "build/magnetic-pendulum.md",
             "--from=markdown",
             "--to=html",
-            "--output=build/blogpost.html",
+            "--output=build/magnetic-pendulum.html",
             "--standalone"
         ]),
     )
