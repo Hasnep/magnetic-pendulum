@@ -13,6 +13,7 @@ jobs:
       - uses: julia-actions/setup-julia@v1
         with:
           version: 1.6
+      - run: julia --project -e 'using Pkg; Pkg.instantiate()'
       - run: julia --project build.jl
       - uses: fixpoint/azblob-upload-artifact@v4
         with:
