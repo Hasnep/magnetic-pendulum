@@ -1,5 +1,8 @@
 # # Recreating the Magnetic Pendulum Fractal in Julia
 
+using Plots
+include(joinpath(pwd(), "src", "save-plots.jl")); # hide
+
 # Test blogpost, please ignore :)
 
 function f(n)
@@ -9,5 +12,7 @@ function f(n)
     end
     return maximum(b)
 end
- 
-println(f(100))
+
+p = plot(f.(1:100))
+
+save_svg(p, "plot.svg")
