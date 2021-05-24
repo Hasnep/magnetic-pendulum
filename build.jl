@@ -24,7 +24,7 @@ if "--pandoc" in ARGS
             "--from=markdown",
             "--to=html",
             "--output=build/magnetic-pendulum.html",
-            "--standalone"
+            "--standalone",
         ]),
     )
 end
