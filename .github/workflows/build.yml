@@ -19,5 +19,5 @@ jobs:
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
           name: magnetic-pendulum
-          path: build/magnetic-pendulum.md
+          path: build/
           container: blogposts
