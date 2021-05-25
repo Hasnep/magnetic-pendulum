@@ -11,8 +11,6 @@ function f(n)
     return maximum(b)
 end
 
-p = plot(f.(1:100))
-
-save_svg(p, "plot.svg")
+save_svg(plot(f.(1:100)), "plot.svg") # hide
 
 # ![A plot](images/plot.svg)
