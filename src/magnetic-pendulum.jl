@@ -14,3 +14,5 @@ end
 p = plot(f.(1:100))
 
 save_svg(p, "plot.svg")
+
+# ![A plot](images/plot.svg)
