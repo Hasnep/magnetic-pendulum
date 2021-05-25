@@ -1,5 +1,3 @@
-# # Recreating the Magnetic Pendulum Fractal in Julia
-
 using Plots
 include(joinpath(pwd(), "src", "save-plots.jl")); # hide
 

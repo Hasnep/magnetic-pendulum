@@ -5,6 +5,11 @@ images_folder = joinpath(pwd(), "build", "images")
 rm(images_folder, force = true, recursive = true)
 mkpath(images_folder)
 
+# Read frontmatter
+frontmatter = open(joinpath(pwd(), "frontmatter.yml")) do f
+    read(f, String)
+end
+
 # Build markdown document
 Literate.markdown(
     joinpath(pwd(), "src", "magnetic-pendulum.jl"),
@@ -12,6 +17,7 @@ Literate.markdown(
     documenter = false,
     execute = true,
     preprocess = s -> replace(s, "# hide\n" => "#hide\n"),
+    postprocess = s -> "---\n$frontmatter\n---\n\n$s",
 )
 
 # Build to html if --pandoc argument was specified
