@@ -12,12 +12,12 @@ function f(n)
     return maximum(b)
 end
 
-save_svg("plot.svg") # hide
+save_svg("plot.svg"); # hide
 x = 1:100
 y = f.(x) ./ 100
 points = [Point(xy...) for xy in zip(x ./ 100, y)]
 setcolor("red")
 poly(points, :stroke)
-finish() # hide
+finish(); # hide
 
-# ![A plot](images/plot.svg)
+# ![A plot](plot.svg)
