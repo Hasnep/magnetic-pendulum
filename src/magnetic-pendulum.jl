@@ -1,8 +1,16 @@
 using Luxor
-
+#
 include(joinpath(pwd(), "src", "save-plots.jl")); # hide
 
 # Test blogpost, please ignore :)
+
+# Inline maths: `f(x) = 10`
+
+# Display mode:
+
+# ```math
+# f(a) = \frac{1}{2\pi}\int_{0}^{2\pi} (\alpha+R\cos(\theta))d\theta
+# ```
 
 function f(n)
     b = BitSet(1:n)
