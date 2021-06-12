@@ -4,7 +4,7 @@ include(joinpath(pwd(), "src", "save-plots.jl")); # hide
 
 # Test blogpost, please ignore :)
 
-# Inline maths: `f(x) = 10`
+# Inline maths: ``f(x) = 10``
 
 # Display mode:
 
