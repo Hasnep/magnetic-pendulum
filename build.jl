@@ -12,7 +12,7 @@ end
 
 # Build markdown document
 Literate.markdown(
-    joinpath(pwd(), "src", "magnetic-pendulum.jl"),
+    joinpath(pwd(), "src", "magnetic-pendulum-fractal.jl"),
     joinpath(pwd(), "build");
     documenter = false,
     execute = true,
@@ -26,10 +26,10 @@ if "--pandoc" in ARGS
     run(
         Cmd([
             "pandoc",
-            "build/magnetic-pendulum.md",
+            "build/magnetic-pendulum-fractal.md",
             "--from=markdown",
             "--to=html",
-            "--output=build/magnetic-pendulum.html",
+            "--output=build/magnetic-pendulum-fractal.html",
             "--standalone",
         ]),
     )
