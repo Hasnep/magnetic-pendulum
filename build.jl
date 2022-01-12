@@ -1,6 +1,7 @@
 import Literate
+import Tar
 
-function build(run_pandoc = false)
+function build(; run_pandoc = false, create_tarball = false)
     # Setup
     build_folder = joinpath(pwd(), "build")
     # rm(build_folder, force = true, recursive = true)
@@ -20,7 +21,7 @@ function build(run_pandoc = false)
         # Fix auto-formatted hide comments
         preprocess = s -> replace(s, "# hide\n" => "#hide\n"),
         # Insert frontmatter
-        postprocess = s -> "---\n$frontmatter\n---\n\n$s",
+        postprocess = s -> "---\n$frontmatter\n---\n\n$s"
     )
 
     # Build to html using pandoc
@@ -29,16 +30,21 @@ function build(run_pandoc = false)
         run(
             Cmd([
                 "pandoc",
-                "build/magnetic-pendulum-fractal.md",
+                joinpath(build_folder, "magnetic-pendulum-fractal.md"),
                 "--from=markdown",
                 "--to=html",
                 "--standalone",
-                "--output=build/magnetic-pendulum-fractal.html",
+                "--output=" * joinpath(build_folder, "magnetic-pendulum-fractal.html"),
             ]),
         )
+    end
+
+    if create_tarball
+        @info "Creating tarball file."
+        Tar.create(build_folder, joinpath(pwd(), "magnetic-pendulum-fractal.tar"))
     end
 end
 
 if !isinteractive()
-    build(false)
+    build(run_pandoc = false, create_tarball = true)
 end

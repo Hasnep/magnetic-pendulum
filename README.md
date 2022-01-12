@@ -15,10 +15,7 @@ include(joinpath(pwd(), "build.jl"))
 To build the blogpost, run:
 
 ```julia
-# To build to markdown
-build(false)
-# To also run pandoc to convert to HTML
-build(true)
+build(run_pandoc = false, create_tarball = false)
 ```
 
-The output files will be `build` folder.
+The raw output files will be in the `build` folder, and an optional tarball file will be created in the project's root.
