@@ -9,15 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1.0.0
-      - uses: julia-actions/setup-julia@v1
+      - name: Checkout code
+        uses: actions/checkout@v1.0.0
+      - name: Install Julia
+        uses: julia-actions/setup-julia@v1
         with:
           version: 1.6
-      - run: julia --project -e 'using Pkg; Pkg.instantiate()'
-      - run: julia --project build.jl
-      - uses: fixpoint/azblob-upload-artifact@v4
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: magnetic-pendulum-fractal
-          path: build/
-          container: blogposts
+      - name: Install dependencies
+        run: julia --project -e 'using Pkg; Pkg.instantiate()'
+      - name: Build project
+        run: julia --project build.jl
