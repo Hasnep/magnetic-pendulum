@@ -4,7 +4,7 @@
 
 using DifferentialEquations: SecondOrderODEProblem
 using Luxor: Point
-using ColorSchemes
+# using ColorSchemes
 using Distributions: MvNormal
 include(joinpath(pwd(), "src", "save-plots.jl")); # hide
 include(joinpath(pwd(), "src", "colour-scheme.jl")); # hide
@@ -151,7 +151,7 @@ end
 # g = 0.05
 h = 0.5
 p = 1.0
-magnets = vec([Magnet(5 .* [sin(θ), cos(θ)], p) for θ in π .* range(0, 2, length = 4)[1:(end-1)]])
+magnets = vec([Magnet(5 .* [sin(θ), cos(θ)], p) for θ in π .* range(0, 2, length = 4)[1:(end - 1)]])
 probs_magnets = [
     SecondOrderODEProblem(
         magnet_boi,

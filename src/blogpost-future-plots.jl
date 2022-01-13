@@ -1,18 +1,18 @@
+# # Title
+
 # I saw a YouTube video titled [The relationship between chaos, fractal and physics](https://www.youtube.com/watch?v=C5Jkgvw-Z6E) which explained an experiment involving a metal pendulum swinging freely over some magnets.
 # In the video they used a simulation to study the basin of attraction.
 # I will try to recreate some of the animations in the video using the DifferentialEquations package in Julia.
 
-using DifferentialEquations: SecondOrderODEProblem
-using Luxor: Point
-using ColorSchemes
-using Distributions: MvNormal
+using DifferentialEquations
+using Plots
+using Distributions
+default(titlefont = font(12)) # hide
 include(joinpath(pwd(), "src", "save-plots.jl")); # hide
-include(joinpath(pwd(), "src", "colour-scheme.jl")); # hide
-include(joinpath(pwd(), "src", "plot-magnets.jl")); # hide
 include(joinpath(pwd(), "src", "plot-animation.jl")); # hide
 include(joinpath(pwd(), "src", "plot-path.jl")); # hide
+include(joinpath(pwd(), "src", "plot-basin.jl")); # hide
 include(joinpath(pwd(), "src", "plot-magnet-effects.jl")); # hide
-# include(joinpath(pwd(), "src", "plot-basin.jl")); # hide
 
 # First, let's define the equations of motion that the pendulum will experience: gravity, friction and magnetism.
 # For gravity, if we define the position where pendulum is hanging vertically down to be the origin, then for a long enough pendulum the effect of gravity will be proportional to the distance form the origin and the mass of the pendulum, i.e. $F_\text{gravity} \propto \vec{s}.$
@@ -29,11 +29,11 @@ acceleration_gravity(s, g) = -g .* s
 
 # Pull back the magnet
 
-s₀ = [5.0, 5.0]
+s₀ = [1, 1]
 
 # Stationary start
 
-v₀ = [0.0, 0.0]
+v₀ = [0, 0]
 
 # Time range
 
@@ -52,21 +52,12 @@ prob_gravity = SecondOrderODEProblem(ode_gravity, v₀, s₀, t_range, [g])
 
 sol_gravity = solve(prob_gravity);
 
-# We can call the solution to get the state at that timestep:
+# Plot the solution, see [this blogpost's repo](https://github.com/hasnep/magnet-pendulum/) for the source code.
 
-sol_gravity(0.0)
+animation_gravity = plot_animation(sol_gravity)
+save_gif(animation_gravity, "gravity.gif")
 
-# That's the initial conditions, v₀ and s₀.
-
-sol_gravity(2.0)
-
-# At timestep 2, the pendulum is going towards the the opposite corner and has a velocity pointing to the bottom left.
-
-# Instead of looking at the number,s let's  plot the solution, see [this blogpost's repo](https://github.com/hasnep/magnet-pendulum/) for the plotting code.
-
-save_video("gravity.gif", plot_animation(sol_gravity)); # hide
-
-# ![Gravity](gravity.gif)
+# ![Gravity](images/gravity.gif)
 
 # The pendulum is swinging towards the centre but it swings back to the same place without losing any energy.
 # Let's add damping.
@@ -90,20 +81,19 @@ prob_damping = SecondOrderODEProblem(ode_damping, v₀, s₀, t_range, [g, d])
 sol_damping = solve(prob_damping);
 
 # Plot the solution
+animation_damping = plot_animation(sol_damping)
+save_gif(animation_damping, "damping.gif") # hide
 
-save_video("damping.gif", plot_animation(sol_damping)); # hide
-
-# ![Damping](damping.gif)
+# ![Damping](images/damping.gif)
 
 # The pendulum comes to a rest at the origin, which matches a pendulum in real life, so that's good.
 
 # For fun, here's the same thing with loads of pendulums starting at random positions and with random initial velocities.
 
 sols = solve.([SecondOrderODEProblem(ode_damping, [0.0, 0.0], rand(MvNormal(2, 1)), t_range, [g, d]) for _ in 1:100]);
-
-# save_video("pendulums.gif", plot_animation(sols)); # hide
-
-# ![Pendulums](pendulums.gif)
+animation_pendulums = plot_animation(sols, [])
+save_gif(animation_pendulums, "pendulums.gif") # hide
+# ![Pendulums](images/pendulums.gif)
 
 # all of the pendulums have the same period, which matches real life pendulums, where the period relates to the length of the pendulum
 
@@ -111,14 +101,14 @@ sols_pushed =
     solve.([
         SecondOrderODEProblem(ode_damping, rand(MvNormal(2, 1)), rand(MvNormal(2, 1)), t_range, [g, d]) for _ in 1:100
     ]);
-# save_video("pendulums-pushed.gif", plot_animation(sols_pushed)); # hide
-
-# ![Pushed pendulums](pendulums-pushed.gif)
+animation_pendulums_pushed = plot_animation(sols_pushed, [])
+save_gif(animation_pendulums_pushed, "pendulums-pushed.gif") # hide
+# ![Pushed pendulums](images/pendulums-pushed.gif)
 
 
 # ## Adding magnets
 
-# Now lets add the thing that will make this interesting: the magnets.
+# Now lets add the thing that will make this interesring: the magnets.
 # A magnet has a position and a polarity.
 
 struct Magnet
@@ -151,7 +141,7 @@ end
 # g = 0.05
 h = 0.5
 p = 1.0
-magnets = vec([Magnet(5 .* [sin(θ), cos(θ)], p) for θ in π .* range(0, 2, length = 4)[1:(end-1)]])
+magnets = vec([Magnet([sin(θ), cos(θ)], p) for θ in π .* range(0, 2, length = 4)[1:(end - 1)]])
 probs_magnets = [
     SecondOrderODEProblem(
         magnet_boi,
@@ -164,13 +154,16 @@ probs_magnets = [
 sols_magnets = solve.(probs_magnets);
 
 # Plot the positions
-# save_video("pendulums-magnets.gif", plot_animation(sols_magnets, magnets)); # hide
 
-# ![Pendulums with magnets](pendulums-magnets.gif)
+animation_pendulums_magnets = plot_animation(sols_magnets, magnets)
+save_gif(animation_pendulums_magnets, "pendulums-magnets.gif") # hide
+
+# ![Pendulums with magnets](images/pendulums-magnets.gif)
 
 # All of the pendulums end up close to one of the magnets, but can we predict which magnet the pendulum will finish closest to?
 # If we plot the paths of three pendulums that start close to each other we can see that they each end over a different magnet.
 # This concept is part of chaos theory.
+
 
 probs_guess = [
     SecondOrderODEProblem(
@@ -179,24 +172,21 @@ probs_guess = [
         s₀,
         [0.0, 10.0],
         [d, h, g, getfield.(magnets, :polarity), getfield.(magnets, :position)],
-    ) for s₀ in [[1.0, -1.5], [1.0, -1.0], [1.5, -0.7]]
+    ) for s₀ in [[-1.0, -1.5], [-1.0, -1.0], [-1.5, -0.7]]
 ]
 sols_guess = solve.(probs_guess);
 
-save_svg("pendulums-path-guess.svg", axes_limit = 3.5); # hide
-plot_path(sols_guess, magnets); # hide
-finish(); # hide
+save_svg("pendulums-path-guess.svg", plot_path(sols_guess, magnets)) # hide
 
-# ![Pendulums with magnets](pendulums-path-guess.svg)
+# ![Pendulums with magnets](images/pendulums-path.svg)
 
-save_svg("magnet-effects.svg", axes_limit = 3.5); # hide
-plot_magnet_effects(magnets; h = h, n_steps = 100, limit = 2); # hide
-finish(); # hide
+save_svg("magnet-effects.svg", plot_magnet_effects(magnets; h = h, n_steps = 100, limit = 2)) # hide
 
-# ![Magnet effects](magnet-effects.svg)
+# ![Heatmap of magnet strength](images/magnet-effects.svg)
 
-## Lets plot the basin of attraction
-## begin
+# Lets plot the basin of attraction
+
+
 ##     g = 1.0
 ##     d = 0.05
 ##     h = 0.5
@@ -213,8 +203,8 @@ finish(); # hide
 ##         end_position = sol[3:4, end]
 ##         return findmin([norm(m.position .- end_position) for m in magnets])[2]
 ##     end
-##
+## 
 ##     basin_of_attraction = plot_basin(get_closest_magnet, magnets; limit = 2.5, n_steps = 250)
-## end
-##
-## save_svg(basin_of_attraction, "basin-of-attraction.svg") # hide
+## 
+## save_svg("basin-of-attraction.svg", basin_of_attraction) # hide
+## 

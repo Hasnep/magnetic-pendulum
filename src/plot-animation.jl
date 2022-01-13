@@ -1,29 +1,36 @@
+using Luxor
+using ShiftedArrays: lag
+using DifferentialEquations
+
 function plot_animation(
-    pendula::Vector{<:ODESolution},
-    magnets::Vector;
+    pendulums::Vector{<:ODESolution},
+    magnets;
     n_frames = 100,
+    line_smoothness = 100,
     line_length = 1,
-    line_width = 2,
-    line_smoothness = 10,
-    limit = 2,
+    line_width = 5,
 )
-    max_time = maximum(last(getfield.(pendula, :t)))
-    return @animate for t in range(0, max_time; length = n_frames)
-        p = plot(xlims = (-limit, limit), ylims = (-limit, limit), legend = false, aspect_ratio = :equal)
-        for pendulum in pendula
-            timestamps = range(max(0, t - line_length), t; length = line_smoothness)
+    # fontsize(0.01)
+    max_timestep = maximum(last(getfield.(pendulums, :t)))
+    return (scene, frame_number) -> begin
+        t = ((frame_number - 1) / n_frames) * max_timestep
+        # text("t = $(round(t))", Point(0, 1); valign = :middle, halign = :centre)
+        for (i, pendulum) in enumerate(pendulums)
+            time_limits = (max(0, t - line_length), t)
+            timestamps = range(time_limits...; length = line_smoothness)
             positions = pendulum(timestamps)
-            plot!(p, positions[3, :], positions[4, :]; linewidth = range(0, line_width, length = line_smoothness))
+            points = Point.(positions[3, :], positions[4, :])
+
+            # Draw line
+            setcolor(get_nth_colour(i))
+            for (j, (from_point, to_point)) in enumerate(collect(zip(lag(points), points))[2:(end - 1)])
+                setline(line_width * j / (length(points) - 2))
+                line(from_point, to_point, :stroke)
+            end
         end
-        scatter!(
-            p,
-            [magnet.position[1] for magnet in magnets],
-            [magnet.position[2] for magnet in magnets];
-            markershape = :xcross,
-        )
-        title!(p, "t=$(round(t; digits = 2))")
+        plot_magnets(magnets)
     end
 end
 
-plot_animation(pendula::Vector{ODESolution}; kwargs...) = plot_animation(pendula, []; kwargs...)
+plot_animation(pendulums::Vector{<:ODESolution}; kwargs...) = plot_animation(pendulums, []; kwargs...)
 plot_animation(pendulum::ODESolution; kwargs...) = plot_animation([pendulum], []; kwargs...)
