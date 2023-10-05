@@ -23,6 +23,9 @@ jobs:
         uses: julia-actions/setup-julia@v1
         with:
           version: "1.9"
+      - name: Install JuliaFormatter.jl
+        run: |
+          julia -e 'import Pkg; Pkg.add("JuliaFormatter")'
       - name: Run Pre-commit
         uses: pre-commit/action@v3.0.0
         env:
