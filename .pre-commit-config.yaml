@@ -21,6 +21,13 @@ repos:
       - name: Don't allow adding large files
         id: check-added-large-files
 
+  # Julia
+  - repo: https://github.com/domluna/JuliaFormatter.jl
+    rev: v1.0.39
+    hooks:
+      - name: Format Julia
+        id: julia-formatter
+
   # YAML
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
