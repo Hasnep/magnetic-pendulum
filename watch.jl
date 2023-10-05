@@ -2,4 +2,4 @@
 
 import BuildJuliaBlogpost
 
-BuildJuliaBlogpost.watch(run_pandoc = true, create_tarball = false)
+BuildJuliaBlogpost.watch(standalone_html = true, create_tarball = false)
