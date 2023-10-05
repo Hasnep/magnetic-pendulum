@@ -1,2 +1,4 @@
 # Built blogpost
 build/
+# Compressed archive
+*.tar.br

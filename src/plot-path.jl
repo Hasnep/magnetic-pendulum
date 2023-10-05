@@ -1,6 +1,10 @@
 using Luxor
 
-function plot_path(pendulums::Vector{<:ODESolution}, magnets::Vector; line_smoothness = 1000)
+function plot_path(
+    pendulums::Vector{<:ODESolution},
+    magnets::Vector;
+    line_smoothness = 1000,
+)
     for (i, pendulum) in enumerate(pendulums)
         timestamps = range(0, last(pendulum.t); length = line_smoothness)
         positions = pendulum(timestamps)

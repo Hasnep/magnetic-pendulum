@@ -2,7 +2,7 @@
 
 ## Building
 
-This blogpost was written with Julia 1.7.0 and optionally requires `pandoc` to build to HTML.
+This blogpost was written with Julia 1.9 and optionally requires `pandoc` to build to HTML.
 To set up the blogpost, run:
 
 ```julia

@@ -1,10 +1,10 @@
 name = "magnetic-pendulum-fractal"
 
 [deps]
+BuildJuliaBlogpost = "e4923c24-d259-4c4a-ba90-f2b05615c70e"
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
-Tar = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 ShiftedArrays = "1277b4bf-5013-50f5-be3d-901d8477a67a"

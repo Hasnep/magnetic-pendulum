@@ -1,7 +1,0 @@
-title: The Magnetic Pendulum Fractal
-firstPosted: [2021, 1, 1]
-lastUpdated: null
-description: Recreating the magnetic pendulum fractal in Julia
-language: Julia
-emoji: 🧲
-repo: magnetic-pendulum-fractal

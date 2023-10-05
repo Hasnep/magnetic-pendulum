@@ -1,26 +1,35 @@
-name: Build Blogpost
+name: Build
 
 on:
+  # Run on all PRs
+  pull_request:
+  # Run when a PR is merged into main
   push:
-    tags:
-      - "*"
+    branches:
+      - main
+  # Build when a release is published
+  release:
+    types:
+      - published
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v1.0.0
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Install Julia
         uses: julia-actions/setup-julia@v1
         with:
-          version: 1.7
+          version: "1.9"
       - name: Install dependencies
         run: julia --project -e 'using Pkg; Pkg.instantiate()'
       - name: Build project
-        run: julia --project build.jl
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: "*.tar"
+        uses: hasnep/julia-blogpost-action@main
+      - name: Compress archive
+        run: |
+          brotli blogpost.tar --output=blogpost.tar.br
+      - name: Upload to release
+        run: |
+          gh release upload "${{ github.ref_name }}" blogpost.tar.br
+        if: ${{ github.event_name == 'release' }}
