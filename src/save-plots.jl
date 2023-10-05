@@ -9,7 +9,7 @@ function setup_canvas(axes_limit::Real, drawing_size::Integer)
     background("black")
     setcolor("white")
 
-    # Draw axes and gridlines    
+    # Draw axes and gridlines
     setline(1)
     for gridline = (-axes_limit):(axes_limit)
         setopacity(gridline == 0 ? 1 : 0.25)
