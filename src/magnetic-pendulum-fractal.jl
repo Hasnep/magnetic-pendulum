@@ -240,6 +240,6 @@ function get_closest_magnet(xy)
     return findmin([norm(m.position .- end_position) for m in magnets])[2]
 end
 
-# basin_of_attraction = plot_basin(get_closest_magnet, magnets; limit=2.5, n_steps=250)
+## basin_of_attraction = plot_basin(get_closest_magnet, magnets; limit=2.5, n_steps=250)
 
-# save_svg(basin_of_attraction, "basin-of-attraction.svg") # hide
+## save_svg(basin_of_attraction, "basin-of-attraction.svg") # hide
