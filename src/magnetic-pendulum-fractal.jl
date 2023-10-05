@@ -1,5 +1,5 @@
 IS_INTERACTIVE = true; # hide
-project_root = joinpath(pwd(), IS_INTERACTIVE ? "." : "..") |> abspath; # hide
+project_root = abspath(joinpath(pwd(), IS_INTERACTIVE ? "." : "..")); # hide
 include(joinpath(project_root, "src", "colour-scheme.jl")); # hide
 include(joinpath(project_root, "src", "plot-animation.jl")); # hide
 include(joinpath(project_root, "src", "plot-basin.jl")); # hide
@@ -63,7 +63,7 @@ sol_gravity(2.0)
 
 # Instead of looking at the numbers let's  plot the solution, see [this blogpost's repo](https://github.com/hasnep/magnet-pendulum/) for the plotting code.
 
-save_video("gravity.gif", plot_animation(sol_gravity); time_extrema=t_range); # hide
+save_video("gravity.gif", plot_animation(sol_gravity); time_extrema = t_range); # hide
 
 # ![Gravity](gravity.gif)
 
@@ -92,7 +92,7 @@ sol_damping = solve(ode_problem_damping);
 
 # Plot the solution
 
-save_video("damping.gif", plot_animation(sol_damping); time_extrema=t_range); # hide
+save_video("damping.gif", plot_animation(sol_damping); time_extrema = t_range); # hide
 
 # ![Damping](damping.gif)
 
@@ -112,7 +112,7 @@ sols =
         ) for _ = 1:100
     ]);
 
-save_video("pendulums.gif", plot_animation(sols); time_extrema=t_range); # hide
+save_video("pendulums.gif", plot_animation(sols); time_extrema = t_range); # hide
 
 # ![Pendulums](pendulums.gif)
 
@@ -129,7 +129,7 @@ problems_pushed = [
 ]
 sols_pushed = solve.(problems_pushed);
 
-save_video("pendulums-pushed.gif", plot_animation(sols_pushed), time_extrema=t_range); # hide
+save_video("pendulums-pushed.gif", plot_animation(sols_pushed), time_extrema = t_range); # hide
 
 # ![Pushed pendulums](pendulums-pushed.gif)
 
@@ -171,7 +171,7 @@ magnet_distance = 3.0
 t_range = [0.0, 20.0]
 magnets = vec([
     Magnet(magnet_distance .* [sin(θ), cos(θ)], p) for
-    θ in π .* range(0, 2, length=4)[1:(end-1)]
+    θ in π .* range(0, 2, length = 4)[1:(end-1)]
 ])
 probs_magnets = [
     SecondOrderODEProblem(
@@ -188,7 +188,7 @@ sols_magnets = solve.(probs_magnets);
 save_video(
     "pendulums-magnets.gif",
     plot_animation(sols_magnets, magnets),
-    time_extrema=t_range,
+    time_extrema = t_range,
 ); # hide
 
 # ![Pendulums with magnets](pendulums-magnets.gif)
@@ -208,14 +208,14 @@ probs_guess = [
 ]
 sols_guess = solve.(probs_guess);
 
-save_svg("pendulums-path-guess.svg", axes_limit=3.5); # hide
+save_svg("pendulums-path-guess.svg", axes_limit = 3.5); # hide
 plot_path(sols_guess, magnets); # hide
 finish(); # hide
 
 # ![Pendulums with magnets](pendulums-path-guess.svg)
 
-save_svg("magnet-effects.svg", axes_limit=3.5); # hide
-plot_magnet_effects(magnets; h=h, n_steps=100, limit=2); # hide
+save_svg("magnet-effects.svg", axes_limit = 3.5); # hide
+plot_magnet_effects(magnets; h = h, n_steps = 100, limit = 2); # hide
 finish(); # hide
 
 # ![Magnet effects](magnet-effects.svg)
