@@ -77,7 +77,7 @@ save_video("gravity.gif", plot_animation(sol_gravity); time_extrema = t_range); 
 
 acceleration_damping(v, d) = -d .* v
 
-# Constant of damping 
+# Constant of damping
 
 d = 0.5
 
