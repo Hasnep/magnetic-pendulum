@@ -83,11 +83,11 @@ version = "5.0.0"
 
 [[deps.BuildJuliaBlogpost]]
 deps = ["FileWatching", "Literate", "TOML", "Tar"]
-git-tree-sha1 = "e146d09143da4ec0a72d1bbe3fb1c097f6b419f4"
+git-tree-sha1 = "bdd7694add9dd257466ab9dda7e7cdac474e050a"
 repo-rev = "main"
 repo-url = "https://github.com/hasnep/build-julia-blogpost"
 uuid = "e4923c24-d259-4c4a-ba90-f2b05615c70e"
-version = "0.3.1"
+version = "0.4.0"
 
 [[deps.Bzip2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -972,9 +972,9 @@ version = "10.42.0+0"
 
 [[deps.PDMats]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
-git-tree-sha1 = "1f2f6bb484346b40bc48f4b5b4ab79cab482a352"
+git-tree-sha1 = "528664265c9c36b3ecdb6d721d47aaab52ddf267"
 uuid = "90014a1f-27ba-587c-ab20-58faa44d9150"
-version = "0.11.23"
+version = "0.11.24"
 
 [[deps.PackageExtensionCompat]]
 git-tree-sha1 = "fb28e33b8a95c4cee25ce296c817d89cc2e53518"
